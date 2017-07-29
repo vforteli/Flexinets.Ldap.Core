@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Flexinets.Ldap.Core</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Verner Fortelius</authors>
+    <owners>vforteli</owners>
+    <licenseUrl>https://github.com/vforteli/RadiusServer/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/vforteli/Flexinets.Ldap.Core</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Library for parsing and assembling LDAP packets</description>
+    <releaseNotes>First nuget release.</releaseNotes>
+    <copyright>Copyright 2017 Verner Fortelius</copyright>
+    <tags>LDAP packet parse assemble authentication</tags>
+  </metadata>
+</package>
