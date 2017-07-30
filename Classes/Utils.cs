@@ -97,27 +97,27 @@ namespace Flexinets.Ldap.Core
 
 
         /// <summary>
-        /// Gets the integer length from a BER encoded byte array at the current position
+        /// Convert BER encoded length at offset to an integer
         /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="currentPosition"></param>
-        /// <param name="position"></param>
+        /// <param name="bytes">Byte array</param>
+        /// <param name="offset">Offset where the BER encoded length is located</param>
+        /// <param name="berByteCount">Number of bytes used to represent BER encoded length</param>
         /// <returns></returns>
-        public static Int32 BerLengthToInt(Byte[] bytes, Int32 currentPosition, out Int32 position)
+        public static Int32 BerLengthToInt(Byte[] bytes, Int32 offset, out Int32 berByteCount)
         {
-            position = 1;   // The minimum length of a ber encoded length is 1 byte
+            berByteCount = 1;   // The minimum length of a ber encoded length is 1 byte
             int attributeLength = 0;
-            if (bytes[currentPosition] >> 7 == 1)    // Long notation
+            if (bytes[offset] >> 7 == 1)    // Long notation
             {
-                var lengthoflengthbytes = bytes[currentPosition] & 127;
+                var lengthoflengthbytes = bytes[offset] & 127;
                 var lengthBytes = new Byte[4];
-                Buffer.BlockCopy(bytes, currentPosition + 1, lengthBytes, 0, lengthoflengthbytes);
+                Buffer.BlockCopy(bytes, offset + 1, lengthBytes, 0, lengthoflengthbytes);
                 attributeLength = BitConverter.ToInt32(lengthBytes.Reverse().ToArray(), 0);
-                position += lengthoflengthbytes;
+                berByteCount += lengthoflengthbytes;
             }
             else // Short notation
             {
-                attributeLength = bytes[currentPosition] & 127;
+                attributeLength = bytes[offset] & 127;
             }
 
             return attributeLength;

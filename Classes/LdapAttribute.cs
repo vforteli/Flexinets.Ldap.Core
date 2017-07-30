@@ -161,7 +161,7 @@ namespace Flexinets.Ldap.Core
 
             var lengthBytes = Utils.IntToBerLength(list.Count);
             var attributeBytes = new byte[1 + lengthBytes.Length + list.Count];
-            attributeBytes[0] = _tag.GetTagByte();
+            attributeBytes[0] = _tag.TagByte;
             Buffer.BlockCopy(lengthBytes, 0, attributeBytes, 1, lengthBytes.Length);
             Buffer.BlockCopy(list.ToArray(), 0, attributeBytes, 1 + lengthBytes.Length, list.Count);
             return attributeBytes;

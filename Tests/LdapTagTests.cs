@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Flexinets.Ldap.Core.Tests
 {
@@ -15,7 +11,7 @@ namespace Flexinets.Ldap.Core.Tests
         public void TestLdapTag()
         {
             var tag = new Tag(UniversalDataType.Sequence, true);
-            var tagbyte = tag.GetTagByte();
+            var tagbyte = tag.TagByte;
             Assert.AreEqual("00001100", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
         }
 
@@ -34,7 +30,7 @@ namespace Flexinets.Ldap.Core.Tests
         public void TestLdapTag2()
         {
             var tag = new Tag(UniversalDataType.Integer, false);
-            var tagbyte = tag.GetTagByte();
+            var tagbyte = tag.TagByte;
             Assert.AreEqual("01000000", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
         }
 
@@ -52,7 +48,7 @@ namespace Flexinets.Ldap.Core.Tests
         public void TestLdapTag3()
         {
             var tag = new Tag(LdapOperation.SearchRequest, true);
-            var tagbyte = tag.GetTagByte();
+            var tagbyte = tag.TagByte;
             Assert.AreEqual("11000110", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
         }
 

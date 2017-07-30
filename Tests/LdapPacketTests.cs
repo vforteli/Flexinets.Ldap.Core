@@ -11,7 +11,6 @@ namespace Flexinets.Ldap.Core.Tests
         {
             var packet = new LdapPacket(1);
 
-            // Bind request
             var bindrequest = new LdapAttribute(LdapOperation.BindRequest, true);
             bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, false, (Byte)3));
             bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, false, "cn=bindUser,cn=Users,dc=dev,dc=company,dc=com"));
@@ -29,7 +28,6 @@ namespace Flexinets.Ldap.Core.Tests
         {
             var packet = new LdapPacket(1);
 
-            // Bind request
             var bindresponse = new LdapAttribute(LdapOperation.BindResponse, true);
 
             var resultCode = new LdapAttribute(UniversalDataType.Enumerated, false, (Byte)LdapResult.success);  
