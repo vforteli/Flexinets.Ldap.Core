@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\LdapContextAttribute.cs" />
+    <Compile Include="Classes\LdapUniversalAttribute.cs" />
+    <Compile Include="Classes\LdapApplicationAttribute.cs" />
     <Compile Include="Classes\LdapAttribute.cs" />
     <Compile Include="Classes\LdapFilterChoice.cs" />
     <Compile Include="Classes\LdapOperation.cs" />

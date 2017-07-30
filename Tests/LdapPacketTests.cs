@@ -11,10 +11,10 @@ namespace Flexinets.Ldap.Core.Tests
         {
             var packet = new LdapPacket(1);
 
-            var bindrequest = new LdapAttribute(LdapOperation.BindRequest, true);
-            bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, false, (Byte)3));
-            bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, false, "cn=bindUser,cn=Users,dc=dev,dc=company,dc=com"));
-            bindrequest.ChildAttributes.Add(new LdapAttribute((byte)0, false, "bindUserPassword")); 
+            var bindrequest = new LdapApplicationAttribute(LdapOperation.BindRequest, true);
+            bindrequest.ChildAttributes.Add(new LdapUniversalAttribute(UniversalDataType.Integer, false, (Byte)3));
+            bindrequest.ChildAttributes.Add(new LdapUniversalAttribute(UniversalDataType.OctetString, false, "cn=bindUser,cn=Users,dc=dev,dc=company,dc=com"));
+            bindrequest.ChildAttributes.Add(new LdapContextAttribute(0, false, "bindUserPassword")); 
 
             packet.ChildAttributes.Add(bindrequest);
 
@@ -28,13 +28,13 @@ namespace Flexinets.Ldap.Core.Tests
         {
             var packet = new LdapPacket(1);
 
-            var bindresponse = new LdapAttribute(LdapOperation.BindResponse, true);
+            var bindresponse = new LdapApplicationAttribute(LdapOperation.BindResponse, true);
 
-            var resultCode = new LdapAttribute(UniversalDataType.Enumerated, false, (Byte)LdapResult.success);  
+            var resultCode = new LdapUniversalAttribute(UniversalDataType.Enumerated, false, (Byte)LdapResult.success);  
             bindresponse.ChildAttributes.Add(resultCode);
 
-            var matchedDn = new LdapAttribute(UniversalDataType.OctetString, false);
-            var diagnosticMessage = new LdapAttribute(UniversalDataType.OctetString, false);
+            var matchedDn = new LdapUniversalAttribute(UniversalDataType.OctetString, false);
+            var diagnosticMessage = new LdapUniversalAttribute(UniversalDataType.OctetString, false);
 
             bindresponse.ChildAttributes.Add(matchedDn);
             bindresponse.ChildAttributes.Add(diagnosticMessage);

@@ -7,7 +7,7 @@ namespace Flexinets.Ldap.Core
 {
     public class LdapAttribute
     {
-        private Tag _tag;
+        protected Tag _tag;
         protected Byte[] Value = new Byte[0];
         public List<LdapAttribute> ChildAttributes = new List<LdapAttribute>();
 
@@ -22,124 +22,6 @@ namespace Flexinets.Ldap.Core
         public Boolean IsConstructed
         {
             get { return _tag.IsConstructed; }
-        }
-
-        public LdapOperation? LdapOperation
-        {
-            get
-            {
-                if (_tag.Class == TagClass.Application)
-                {
-                    return _tag.LdapOperation;
-                }
-                return null;
-            }
-        }
-
-        public UniversalDataType? DataType
-        {
-            get
-            {
-                if (_tag.Class == TagClass.Universal)
-                {
-                    return _tag.DataType;
-                }
-                return null;
-            }
-        }
-
-        public Byte? ContextType
-        {
-            get
-            {
-                if (_tag.Class == TagClass.Context)
-                {
-                    return _tag.ContextType;
-                }
-                return null;
-            }
-        }
-
-
-        /// <summary>
-        /// Create an application attribute
-        /// </summary>
-        /// <param name="operation"></param>
-        /// <param name="isConstructed"></param>
-        public LdapAttribute(LdapOperation operation, Boolean isConstructed)
-        {
-            _tag = new Tag(operation, isConstructed);
-        }
-
-
-        /// <summary>
-        /// Create an application attribute
-        /// </summary>
-        /// <param name="operation"></param>
-        /// <param name="isConstructed"></param>
-        /// <param name="value"></param>
-        public LdapAttribute(LdapOperation operation, Boolean isConstructed, Object value)
-        {
-            _tag = new Tag(operation, isConstructed);
-            Value = GetBytes(value);
-        }
-
-
-        /// <summary>
-        /// Create a universal attribute
-        /// </summary>
-        /// <param name="dataType"></param>
-        /// <param name="isConstructed"></param>
-        public LdapAttribute(UniversalDataType dataType, Boolean isConstructed)
-        {
-            _tag = new Tag(dataType, isConstructed);
-        }
-
-
-        /// <summary>
-        /// Create a universal attribute
-        /// </summary>
-        /// <param name="dataType"></param>
-        /// <param name="isConstructed"></param>
-        /// <param name="value"></param>
-        public LdapAttribute(UniversalDataType dataType, Boolean isConstructed, Object value)
-        {
-            _tag = new Tag(dataType, isConstructed);
-            Value = GetBytes(value);
-        }
-
-
-        /// <summary>
-        /// Create a context attribute
-        /// </summary>
-        /// <param name="contextType"></param>
-        /// <param name="isConstructed"></param>
-        public LdapAttribute(Byte contextType, Boolean isConstructed)
-        {
-            _tag = new Tag(contextType, isConstructed);
-        }
-
-
-        /// <summary>
-        /// Create a context attribute
-        /// </summary>
-        /// <param name="contextType"></param>
-        /// <param name="isConstructed"></param>
-        /// <param name="value"></param>
-        public LdapAttribute(Byte contextType, Boolean isConstructed, Object value)
-        {
-            _tag = new Tag(contextType, isConstructed);
-            Value = GetBytes(value);
-        }
-
-
-        /// <summary>
-        /// Create an attribute with tag
-        /// </summary>
-        /// <param name="tag"></param>
-        protected LdapAttribute(Tag tag)
-        {
-            _tag = tag;
         }
 
 
@@ -215,29 +97,28 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private Byte[] GetBytes(Object value)
+        protected Byte[] GetBytes(Object value)
         {
-            if (value.GetType() == typeof(String))
+            switch (value)
             {
-                return Encoding.UTF8.GetBytes((String)value);
+                case String _value:
+                    return Encoding.UTF8.GetBytes(_value);
+
+                case Int32 _value:
+                    return BitConverter.GetBytes(_value).Reverse().ToArray();
+
+                case Boolean _value:
+                    return BitConverter.GetBytes(_value);
+
+                case Byte _value:
+                    return new Byte[] { _value };
+
+                case Byte[] _value:
+                    return _value;
+
+                default:
+                    throw new InvalidOperationException($"Nothing found for {value.GetType()}");
             }
-            else if (value.GetType() == typeof(Int32))
-            {
-                return BitConverter.GetBytes((Int32)value).Reverse().ToArray();
-            }
-            else if (value.GetType() == typeof(Boolean))
-            {
-                return BitConverter.GetBytes((Boolean)value);
-            }
-            else if (value.GetType() == typeof(Byte))
-            {
-                return new Byte[] { (Byte)value };
-            }
-            else if (value.GetType() == typeof(Byte[]))
-            {
-                return (Byte[])value;
-            }
-            throw new InvalidOperationException($"Nothing found for {value.GetType()}");
         }
     }
 }

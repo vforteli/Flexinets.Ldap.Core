@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Flexinets.Ldap.Core
 {
-    public class LdapPacket : LdapAttribute
+    public class LdapPacket : LdapUniversalAttribute
     {
         public Int32 MessageId
         {
@@ -20,7 +20,7 @@ namespace Flexinets.Ldap.Core
         /// <param name="messageId"></param>
         public LdapPacket(Int32 messageId) : base(UniversalDataType.Sequence, true)
         {
-            ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, false, messageId));
+            ChildAttributes.Add(new LdapUniversalAttribute(UniversalDataType.Integer, false, messageId));
         }
 
 
