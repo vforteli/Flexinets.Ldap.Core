@@ -1,12 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 
 namespace Flexinets.Ldap.Core.Tests
 {
-    [TestClass]
     public class LdapAttributeTests
     {
-        [TestMethod]
+        [TestCase]
         public void TestLdapAttributeGetBytes()
         {
             var attribute = new LdapAttribute(UniversalDataType.Integer, false, (Byte)1);
@@ -14,7 +13,7 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapAttributeGetBytes2()
         {
             var attribute = new LdapAttribute(UniversalDataType.Integer, false, (Byte)2);
@@ -22,7 +21,7 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapAttributeGetBytesMaxInt()
         {
             var attribute = new LdapAttribute(UniversalDataType.Integer, false, Int32.MaxValue);
@@ -30,7 +29,7 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapAttributeGetBytesBoolean()
         {
             var attribute = new LdapAttribute(UniversalDataType.Boolean, false, true);
@@ -38,7 +37,7 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapAttributeGetBytesBoolean2()
         {
             var attribute = new LdapAttribute(UniversalDataType.Boolean, false, false);
@@ -46,7 +45,7 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapAttributeGetBytesString()
         {
             var attribute = new LdapAttribute(UniversalDataType.OctetString, false, "dc=karakorum,dc=net");
@@ -54,14 +53,14 @@ namespace Flexinets.Ldap.Core.Tests
         }
    
 
-        [TestMethod]
+        [TestCase]
         public void TestAttributeClass()
         {
             var attribute = new LdapAttribute(LdapOperation.BindRequest, true);
             Assert.IsNull(attribute.DataType);
         }
 
-        [TestMethod]
+        [TestCase]
         public void TestAttributeClass2()
         {
             var attribute = new LdapAttribute(LdapOperation.BindRequest, true);

@@ -1,60 +1,25 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using System.Collections;
 
 namespace Flexinets.Ldap.Core.Tests
 {
-    [TestClass]
     public class BerLengthTests
     {
-        [TestMethod]
-        public void TestBerLengthShortNotation1()
+        [TestCase(1, "10000000")]
+        [TestCase(127, "11111110")]
+        [TestCase(128, "10000001 00000001")]
+        [TestCase(256, "01000001 00000000 10000000")]
+        [TestCase(65536, "11000001 00000000 00000000 10000000")]
+        [TestCase(255, "10000001 11111111")]
+        public void TestIntToBerLength(Int32 input, String expected)
         {
-            var berlength = Utils.IntToBerLength(1);
-            Assert.AreEqual("10000000", Utils.BitsToString(new BitArray(berlength)));
+            var berlength = Utils.IntToBerLength(input);
+            Assert.AreEqual(expected, Utils.BitsToString(new BitArray(berlength)));
         }
 
 
-        [TestMethod]
-        public void TestBerLengthShortNotation2()
-        {
-            var berlength = Utils.IntToBerLength(127);
-            Assert.AreEqual("11111110", Utils.BitsToString(new BitArray(berlength)));
-        }
-
-
-        [TestMethod]
-        public void TestBerLengthLongNotation1()
-        {
-            var berlength = Utils.IntToBerLength(128);
-            Assert.AreEqual("10000001 00000001", Utils.BitsToString(new BitArray(berlength)));
-        }
-
-
-        [TestMethod]
-        public void TestBerLengthLongNotation2()
-        {
-            var berlength = Utils.IntToBerLength(256);
-            Assert.AreEqual("01000001 00000000 10000000", Utils.BitsToString(new BitArray(berlength)));
-        }
-
-
-        [TestMethod]
-        public void TestBerLengthLongNotation3()
-        {
-            var berlength = Utils.IntToBerLength(65536);
-            Assert.AreEqual("11000001 00000000 00000000 10000000", Utils.BitsToString(new BitArray(berlength)));
-        }
-
-
-        [TestMethod]
-        public void TestBerLengthLongNotation4()
-        {
-            var berlength = Utils.IntToBerLength(255);
-            Assert.AreEqual("10000001 11111111", Utils.BitsToString(new BitArray(berlength)));
-        }
-
-
-        [TestMethod]
+        [TestCase]
         public void TestBerLengthLongNotation5()
         {
             var bytes = Utils.StringToByteArray("300c02010161070a010004000400");
@@ -65,7 +30,7 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
-        [TestMethod]
+        [TestCase]
         public void TestBerLengthLongNotation6()
         {
             var bytes = Utils.StringToByteArray("300c02010161070a010004000400");

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Text;
 using System.Linq;
-
+using System.IO;
 
 namespace Flexinets.Ldap.Core
 {
@@ -27,9 +27,9 @@ namespace Flexinets.Ldap.Core
         public static String ByteArrayToString(Byte[] bytes)
         {
             var hex = new StringBuilder(bytes.Length * 2);
-            foreach (byte b in bytes)
+            foreach (var b in bytes)
             {
-                hex.AppendFormat($"{b:x2}");
+                hex.Append($"{b:x2}");
             }
             return hex.ToString();
         }
@@ -118,6 +118,35 @@ namespace Flexinets.Ldap.Core
             else // Short notation
             {
                 attributeLength = bytes[offset] & 127;
+            }
+
+            return attributeLength;
+        }
+
+
+        /// <summary>
+        /// Get a BER length from a stream
+        /// </summary>
+        /// <param name="stream">Stream at position where BER length should be found</param>
+        /// <param name="berByteCount">Number of bytes used to represent BER encoded length</param>
+        /// <returns></returns>
+        public static Int32 BerLengthToInt(Stream stream, out Int32 berByteCount)
+        {
+            berByteCount = 1;   // The minimum length of a ber encoded length is 1 byte
+            int attributeLength = 0;
+            var berByte = new Byte[1];
+            stream.Read(berByte, 0, 1);
+            if (berByte[0] >> 7 == 1)    // Long notation, first byte tells us how many bytes are used for the length
+            {
+                var lengthoflengthbytes = berByte[0] & 127;
+                var lengthBytes = new Byte[lengthoflengthbytes];
+                stream.Read(lengthBytes, 0, lengthoflengthbytes);
+                attributeLength = BitConverter.ToInt32(lengthBytes.Reverse().ToArray(), 0);
+                berByteCount += lengthoflengthbytes;
+            }
+            else // Short notation, length contained in the first byte
+            {
+                attributeLength = berByte[0] & 127;
             }
 
             return attributeLength;

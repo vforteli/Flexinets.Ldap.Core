@@ -1,13 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections;
 
 namespace Flexinets.Ldap.Core.Tests
 {
-    [TestClass]
     public class LdapTagTests
     {
-        [TestMethod]
+        [TestCase]
         public void TestLdapTag()
         {
             var tag = new Tag(UniversalDataType.Sequence, true);
@@ -16,7 +15,7 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapTagParse()
         {
             var tag = Tag.Parse(Utils.StringToByteArray("30")[0]);
@@ -26,7 +25,7 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapTag2()
         {
             var tag = new Tag(UniversalDataType.Integer, false);
@@ -34,7 +33,7 @@ namespace Flexinets.Ldap.Core.Tests
             Assert.AreEqual("01000000", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
         }
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapTagParse2()
         {
             var tag = Tag.Parse(Utils.StringToByteArray("02")[0]);
@@ -44,7 +43,7 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapTag3()
         {
             var tag = new Tag(LdapOperation.SearchRequest, true);
@@ -52,7 +51,7 @@ namespace Flexinets.Ldap.Core.Tests
             Assert.AreEqual("11000110", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
         }
 
-        [TestMethod]
+        [TestCase]
         public void TestLdapTagParse3()
         {
             var tag = Tag.Parse(Utils.StringToByteArray("63")[0]);

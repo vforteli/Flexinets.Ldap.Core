@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Flexinets.Ldap.Core
 {
@@ -46,6 +47,27 @@ namespace Flexinets.Ldap.Core
 
 
         /// <summary>
+        /// Try parsing an ldap packet from a stream        
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static Boolean TryParsePacket(Stream stream, out LdapPacket packet)
+        {
+            var tagByte = new Byte[1];
+            stream.Read(tagByte, 0, 1);
+            var tag = Tag.Parse(tagByte[0]);
+
+            var contentLength = Utils.BerLengthToInt(stream, out int i);
+            var contentBytes = new Byte[contentLength];
+            stream.Read(contentBytes, 0, contentLength);
+
+            packet = new LdapPacket(tag);
+            packet.ChildAttributes.AddRange(ParseAttributes(contentBytes, 0, contentLength));
+            return true;
+        }
+
+
+        /// <summary>
         /// Parse the child attributes
         /// </summary>
         /// <param name="bytes"></param>
@@ -59,8 +81,7 @@ namespace Flexinets.Ldap.Core
             {
                 var tag = Tag.Parse(bytes[currentPosition]);
                 currentPosition++;
-                int i;
-                var attributeLength = Utils.BerLengthToInt(bytes, currentPosition, out i);
+                var attributeLength = Utils.BerLengthToInt(bytes, currentPosition, out int i);
                 currentPosition += i;
 
                 // This is for the first pass, ie the packet itself when the length is unknown
