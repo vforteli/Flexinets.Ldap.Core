@@ -53,6 +53,27 @@ namespace Flexinets.Ldap.Core
         /// <returns></returns>
         public static Boolean TryParsePacket(Stream stream, out LdapPacket packet)
         {
+            try
+            {
+                packet = ParsePacket(stream);               
+                return true;
+            }
+            catch (Exception)
+            {
+                // todo do something with exception maybe...
+                packet = null;
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Parse an ldap packet from a stream        
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static LdapPacket ParsePacket(Stream stream)
+        {
             var tagByte = new Byte[1];
             stream.Read(tagByte, 0, 1);
             var tag = Tag.Parse(tagByte[0]);
@@ -61,9 +82,9 @@ namespace Flexinets.Ldap.Core
             var contentBytes = new Byte[contentLength];
             stream.Read(contentBytes, 0, contentLength);
 
-            packet = new LdapPacket(tag);
+            var packet = new LdapPacket(tag);
             packet.ChildAttributes.AddRange(ParseAttributes(contentBytes, 0, contentLength));
-            return true;
+            return packet;
         }
 
 
