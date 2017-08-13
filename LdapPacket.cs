@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -6,6 +7,7 @@ namespace Flexinets.Ldap.Core
 {
     public class LdapPacket : LdapAttribute
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(LdapPacket));
         public Int32 MessageId
         {
             get
@@ -55,36 +57,28 @@ namespace Flexinets.Ldap.Core
         {
             try
             {
-                packet = ParsePacket(stream);               
-                return true;
+                var tagByte = new Byte[1];
+                var i = stream.Read(tagByte, 0, 1);
+                if (i != 0)
+                {
+                    var tag = Tag.Parse(tagByte[0]);
+
+                    var contentLength = Utils.BerLengthToInt(stream, out int n);
+                    var contentBytes = new Byte[contentLength];
+                    stream.Read(contentBytes, 0, contentLength);
+
+                    packet = new LdapPacket(tag);
+                    packet.ChildAttributes.AddRange(ParseAttributes(contentBytes, 0, contentLength));
+                    return true;
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // todo do something with exception maybe...
-                packet = null;
-                return false;
+                _log.Error("Could not parse packet from stream", ex);
             }
-        }
 
-
-        /// <summary>
-        /// Parse an ldap packet from a stream        
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public static LdapPacket ParsePacket(Stream stream)
-        {
-            var tagByte = new Byte[1];
-            stream.Read(tagByte, 0, 1);
-            var tag = Tag.Parse(tagByte[0]);
-
-            var contentLength = Utils.BerLengthToInt(stream, out int i);
-            var contentBytes = new Byte[contentLength];
-            stream.Read(contentBytes, 0, contentLength);
-
-            var packet = new LdapPacket(tag);
-            packet.ChildAttributes.AddRange(ParseAttributes(contentBytes, 0, contentLength));
-            return packet;
+            packet = null;
+            return false;
         }
 
 
