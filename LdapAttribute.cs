@@ -217,27 +217,26 @@ namespace Flexinets.Ldap.Core
         /// <returns></returns>
         private Byte[] GetBytes(Object value)
         {
-            if (value.GetType() == typeof(String))
+            switch (value)
             {
-                return Encoding.UTF8.GetBytes((String)value);
-            }
-            else if (value.GetType() == typeof(Int32))
-            {
-                return BitConverter.GetBytes((Int32)value).Reverse().ToArray();
-            }
-            else if (value.GetType() == typeof(Boolean))
-            {
-                return BitConverter.GetBytes((Boolean)value);
-            }
-            else if (value.GetType() == typeof(Byte))
-            {
-                return new Byte[] { (Byte)value };
-            }
-            else if (value.GetType() == typeof(Byte[]))
-            {
-                return (Byte[])value;
-            }
-            throw new InvalidOperationException($"Nothing found for {value.GetType()}");
+                case String _value:
+                    return Encoding.UTF8.GetBytes(_value);
+
+                case Int32 _value:
+                    return BitConverter.GetBytes(_value).Reverse().ToArray();
+
+                case Boolean _value:
+                    return BitConverter.GetBytes(_value);
+
+                case Byte _value:
+                    return new Byte[] { _value };
+
+                case Byte[] _value:
+                    return _value;
+
+                default:
+                    throw new InvalidOperationException($"Nothing found for {value.GetType()}");
+            }           
         }
     }
 }

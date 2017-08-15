@@ -44,15 +44,18 @@ namespace Flexinets.Ldap.Core
         /// <returns></returns>
         public static LdapPacket ParsePacket(Byte[] bytes)
         {
-            return (LdapPacket)ParseAttributes(bytes, 0, null)[0];
+            var tag = Tag.Parse(bytes[0]);
+            var contentLength = Utils.BerLengthToInt(bytes, 1, out var lengthBytesCount);
+            return (LdapPacket)ParseAttributes(bytes, 0, contentLength + lengthBytesCount + 1)[0];
         }
 
 
         /// <summary>
         /// Try parsing an ldap packet from a stream        
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
+        /// </summary>      
+        /// <param name="stream"></param>
+        /// <param name="packet"></param>
+        /// <returns>True if succesful. False if parsing fails or stream is empty</returns>
         public static Boolean TryParsePacket(Stream stream, out LdapPacket packet)
         {
             try
@@ -89,21 +92,15 @@ namespace Flexinets.Ldap.Core
         /// <param name="currentPosition"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        private static List<LdapAttribute> ParseAttributes(Byte[] bytes, Int32 currentPosition, Int32? length)
+        private static List<LdapAttribute> ParseAttributes(Byte[] bytes, Int32 currentPosition, Int32 length)
         {
             var list = new List<LdapAttribute>();
-            while (!length.HasValue || (currentPosition < length))
+            while (currentPosition < length)
             {
                 var tag = Tag.Parse(bytes[currentPosition]);
                 currentPosition++;
                 var attributeLength = Utils.BerLengthToInt(bytes, currentPosition, out int i);
                 currentPosition += i;
-
-                // This is for the first pass, ie the packet itself when the length is unknown
-                if (!length.HasValue)
-                {
-                    length = attributeLength + currentPosition;
-                }
 
                 var attribute = new LdapPacket(tag);
                 if (tag.IsConstructed && attributeLength > 0)
