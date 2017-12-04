@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp2.0;net471</TargetFrameworks>
-    <Version>1.0.2.0</Version>
+    <Version>1.0.4.0</Version>
     <Title>Flexinets.Ldap.Core</Title>
     <Authors>Verner Fortelius</Authors>
     <Description>Library for parsing and assembling LDAP packets</Description>
