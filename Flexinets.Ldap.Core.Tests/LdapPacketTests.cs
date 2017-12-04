@@ -12,9 +12,9 @@ namespace Flexinets.Ldap.Core.Tests
             var packet = new LdapPacket(1);
 
             var bindrequest = new LdapAttribute(LdapOperation.BindRequest, true);
-            bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, false, (Byte)3));
-            bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, false, "cn=bindUser,cn=Users,dc=dev,dc=company,dc=com"));
-            bindrequest.ChildAttributes.Add(new LdapAttribute((byte)0, false, "bindUserPassword"));
+            bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, (Byte)3));
+            bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, "cn=bindUser,cn=Users,dc=dev,dc=company,dc=com"));
+            bindrequest.ChildAttributes.Add(new LdapAttribute((byte)0, "bindUserPassword"));
 
             packet.ChildAttributes.Add(bindrequest);
 
@@ -30,11 +30,11 @@ namespace Flexinets.Ldap.Core.Tests
 
             var bindresponse = new LdapAttribute(LdapOperation.BindResponse, true);
 
-            var resultCode = new LdapAttribute(UniversalDataType.Enumerated, false, (Byte)LdapResult.success);
+            var resultCode = new LdapAttribute(UniversalDataType.Enumerated, (Byte)LdapResult.success);
             bindresponse.ChildAttributes.Add(resultCode);
 
-            var matchedDn = new LdapAttribute(UniversalDataType.OctetString, false);
-            var diagnosticMessage = new LdapAttribute(UniversalDataType.OctetString, false);
+            var matchedDn = new LdapAttribute(UniversalDataType.OctetString);
+            var diagnosticMessage = new LdapAttribute(UniversalDataType.OctetString);
 
             bindresponse.ChildAttributes.Add(matchedDn);
             bindresponse.ChildAttributes.Add(diagnosticMessage);

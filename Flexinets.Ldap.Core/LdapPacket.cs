@@ -23,7 +23,7 @@ namespace Flexinets.Ldap.Core
         /// <param name="messageId"></param>
         public LdapPacket(Int32 messageId) : base(UniversalDataType.Sequence, true)
         {
-            ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, false, messageId));
+            ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, messageId));
         }
 
 

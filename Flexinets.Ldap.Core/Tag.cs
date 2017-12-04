@@ -17,43 +17,20 @@ namespace Flexinets.Ldap.Core
             {
                 return new BitArray(new byte[] { TagByte }).Get(5);
             }
-        }
-
-
-        public TagClass Class
-        {
-            get
+            set
             {
-                return (TagClass)(TagByte >> 6);
+                var foo = new BitArray(new byte[] { TagByte });
+                foo.Set(5, value);
+                var temp = new byte[1];
+                foo.CopyTo(temp, 0);
+                TagByte = temp[0];
             }
         }
 
-
-        public UniversalDataType DataType
-        {
-            get
-            {
-                return (UniversalDataType)(TagByte & 31);
-            }
-        }
-
-
-        public LdapOperation LdapOperation
-        {
-            get
-            {
-                return (LdapOperation)(TagByte & 31);
-            }
-        }
-
-
-        public Byte ContextType
-        {
-            get
-            {
-                return (byte)(TagByte & 31);
-            }
-        }
+        public TagClass Class => (TagClass)(TagByte >> 6);
+        public UniversalDataType DataType => (UniversalDataType)(TagByte & 31);
+        public LdapOperation LdapOperation => (LdapOperation)(TagByte & 31);
+        public Byte ContextType => (byte)(TagByte & 31);
 
 
         /// <summary>
@@ -61,9 +38,9 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="operation"></param>
         /// <param name="isSequence"></param>
-        public Tag(LdapOperation operation, Boolean isSequence)
+        public Tag(LdapOperation operation)
         {
-            TagByte = (byte)((byte)operation + (Convert.ToByte(isSequence) << 5) + ((byte)TagClass.Application << 6));
+            TagByte = (byte)((byte)operation + ((byte)TagClass.Application << 6));
         }
 
 
@@ -72,9 +49,9 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="isSequence"></param>
         /// <param name="operation"></param>
-        public Tag(UniversalDataType dataType, Boolean isSequence)
+        public Tag(UniversalDataType dataType)
         {
-            TagByte = (byte)((byte)dataType + (Convert.ToByte(isSequence) << 5) + ((byte)TagClass.Universal << 6));
+            TagByte = (byte)(dataType + ((byte)TagClass.Universal << 6));
         }
 
 
@@ -83,9 +60,9 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="isSequence"></param>
         /// <param name="operation"></param>
-        public Tag(Byte context, Boolean isSequence)
+        public Tag(Byte context)
         {
-            TagByte = (byte)((byte)context + (Convert.ToByte(isSequence) << 5) + ((byte)TagClass.Context << 6));
+            TagByte = (byte)(context + ((byte)TagClass.Context << 6));
         }
 
 
@@ -96,13 +73,12 @@ namespace Flexinets.Ldap.Core
         /// <returns></returns>
         public static Tag Parse(Byte tagByte)
         {
-            return new Tag(tagByte);
+            return new Tag { TagByte = tagByte };
         }
 
 
-        private Tag(Byte tagByte)
+        private Tag()
         {
-            TagByte = tagByte;
         }
     }
 }

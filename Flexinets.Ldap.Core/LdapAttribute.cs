@@ -66,9 +66,9 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="operation"></param>
         /// <param name="isConstructed"></param>
-        public LdapAttribute(LdapOperation operation, Boolean isConstructed)
+        public LdapAttribute(LdapOperation operation)
         {
-            _tag = new Tag(operation, isConstructed);
+            _tag = new Tag(operation);
         }
 
 
@@ -78,9 +78,9 @@ namespace Flexinets.Ldap.Core
         /// <param name="operation"></param>
         /// <param name="isConstructed"></param>
         /// <param name="value"></param>
-        public LdapAttribute(LdapOperation operation, Boolean isConstructed, Object value)
+        public LdapAttribute(LdapOperation operation, Object value)
         {
-            _tag = new Tag(operation, isConstructed);
+            _tag = new Tag(operation);
             Value = GetBytes(value);
         }
 
@@ -90,9 +90,9 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="dataType"></param>
         /// <param name="isConstructed"></param>
-        public LdapAttribute(UniversalDataType dataType, Boolean isConstructed)
+        public LdapAttribute(UniversalDataType dataType)
         {
-            _tag = new Tag(dataType, isConstructed);
+            _tag = new Tag(dataType);
         }
 
 
@@ -102,9 +102,9 @@ namespace Flexinets.Ldap.Core
         /// <param name="dataType"></param>
         /// <param name="isConstructed"></param>
         /// <param name="value"></param>
-        public LdapAttribute(UniversalDataType dataType, Boolean isConstructed, Object value)
+        public LdapAttribute(UniversalDataType dataType, Object value)
         {
-            _tag = new Tag(dataType, isConstructed);
+            _tag = new Tag(dataType);
             Value = GetBytes(value);
         }
 
@@ -114,9 +114,9 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="contextType"></param>
         /// <param name="isConstructed"></param>
-        public LdapAttribute(Byte contextType, Boolean isConstructed)
+        public LdapAttribute(Byte contextType)
         {
-            _tag = new Tag(contextType, isConstructed);
+            _tag = new Tag(contextType);
         }
 
 
@@ -126,9 +126,9 @@ namespace Flexinets.Ldap.Core
         /// <param name="contextType"></param>
         /// <param name="isConstructed"></param>
         /// <param name="value"></param>
-        public LdapAttribute(Byte contextType, Boolean isConstructed, Object value)
+        public LdapAttribute(Byte contextType, Object value)
         {
-            _tag = new Tag(contextType, isConstructed);
+            _tag = new Tag(contextType);
             Value = GetBytes(value);
         }
 
@@ -150,8 +150,9 @@ namespace Flexinets.Ldap.Core
         public Byte[] GetBytes()
         {
             var list = new List<Byte>();
-            if (_tag.IsConstructed)
+            if (ChildAttributes.Any())
             {
+                _tag.IsConstructed = true;
                 ChildAttributes.ForEach(o => list.AddRange(o.GetBytes()));
             }
             else
@@ -236,7 +237,7 @@ namespace Flexinets.Ldap.Core
 
                 default:
                     throw new InvalidOperationException($"Nothing found for {value.GetType()}");
-            }           
+            }
         }
     }
 }

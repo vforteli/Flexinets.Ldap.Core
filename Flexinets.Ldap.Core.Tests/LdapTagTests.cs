@@ -9,7 +9,10 @@ namespace Flexinets.Ldap.Core.Tests
         [TestCase]
         public void TestLdapTag()
         {
-            var tag = new Tag(UniversalDataType.Sequence, true);
+            var tag = new Tag(UniversalDataType.Sequence)
+            {
+                IsConstructed = true
+            };
             var tagbyte = tag.TagByte;
             Assert.AreEqual("00001100", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
         }
@@ -28,7 +31,7 @@ namespace Flexinets.Ldap.Core.Tests
         [TestCase]
         public void TestLdapTag2()
         {
-            var tag = new Tag(UniversalDataType.Integer, false);
+            var tag = new Tag(UniversalDataType.Integer);
             var tagbyte = tag.TagByte;
             Assert.AreEqual("01000000", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
         }
@@ -46,7 +49,10 @@ namespace Flexinets.Ldap.Core.Tests
         [TestCase]
         public void TestLdapTag3()
         {
-            var tag = new Tag(LdapOperation.SearchRequest, true);
+            var tag = new Tag(LdapOperation.SearchRequest)
+            {
+                IsConstructed = true
+            };
             var tagbyte = tag.TagByte;
             Assert.AreEqual("11000110", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
         }
