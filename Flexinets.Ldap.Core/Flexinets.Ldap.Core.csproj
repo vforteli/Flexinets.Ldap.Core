@@ -5,7 +5,9 @@
     <Version>1.0.4.0</Version>
     <Title>Flexinets.Ldap.Core</Title>
     <Authors>Verner Fortelius</Authors>
-    <Description>Library for parsing and assembling LDAP packets</Description>
+    <Description>Library for parsing and assembling LDAP packets
+This library can be used to create an LDAP server that can be used to support legacy applications that require an LDAP backend. The use cases are for example, authentication (Ldap bind) or user/membership lookup against an arbitrary database.
+For an example server implementation see https://github.com/vforteli/FlexinetsLdap</Description>
     <Copyright>Copyright 2017 Verner Fortelius</Copyright>
     <PackageLicenseUrl>https://github.com/vforteli/Flexinets.Ldap.Core/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/vforteli/Flexinets.Ldap.Core</PackageProjectUrl>
