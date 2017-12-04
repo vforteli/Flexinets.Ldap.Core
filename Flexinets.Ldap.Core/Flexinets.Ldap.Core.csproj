@@ -13,8 +13,8 @@ For an example server implementation see https://github.com/vforteli/FlexinetsLd
     <PackageProjectUrl>https://github.com/vforteli/Flexinets.Ldap.Core</PackageProjectUrl>
     <PackageReleaseNotes>Target .Net Standard 2.0, .Net Core 2.0 and .Net 4.7.1</PackageReleaseNotes>
     <PackageTags>LDAP packet parse assemble authentication</PackageTags>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
@@ -22,7 +22,7 @@ For an example server implementation see https://github.com/vforteli/FlexinetsLd
     <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
     <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <UpdateAssemblyInfoVersion>True</UpdateAssemblyInfoVersion>
     <AssemblyVersionSettings>None.None.Increment.None</AssemblyVersionSettings>
     <AssemblyFileVersionSettings>None.None.Increment.None</AssemblyFileVersionSettings>
   </PropertyGroup>
