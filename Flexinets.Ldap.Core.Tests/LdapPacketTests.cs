@@ -11,7 +11,7 @@ namespace Flexinets.Ldap.Core.Tests
         {
             var packet = new LdapPacket(1);
 
-            var bindrequest = new LdapAttribute(LdapOperation.BindRequest, true);
+            var bindrequest = new LdapAttribute(LdapOperation.BindRequest);
             bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, (Byte)3));
             bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, "cn=bindUser,cn=Users,dc=dev,dc=company,dc=com"));
             bindrequest.ChildAttributes.Add(new LdapAttribute((byte)0, "bindUserPassword"));
@@ -28,7 +28,7 @@ namespace Flexinets.Ldap.Core.Tests
         {
             var packet = new LdapPacket(1);
 
-            var bindresponse = new LdapAttribute(LdapOperation.BindResponse, true);
+            var bindresponse = new LdapAttribute(LdapOperation.BindResponse);
 
             var resultCode = new LdapAttribute(UniversalDataType.Enumerated, (Byte)LdapResult.success);
             bindresponse.ChildAttributes.Add(resultCode);
@@ -39,6 +39,18 @@ namespace Flexinets.Ldap.Core.Tests
             bindresponse.ChildAttributes.Add(matchedDn);
             bindresponse.ChildAttributes.Add(diagnosticMessage);
 
+            packet.ChildAttributes.Add(bindresponse);
+
+            var expected = "300f02040000000161070a010004000400"; // "300c02010161070a010004000400";
+            Assert.AreEqual(expected, Utils.ByteArrayToString(packet.GetBytes()));
+        }
+
+
+        [TestCase]
+        public void TestLdapAttributeSequenceGetBytesShortcut()
+        {
+            var packet = new LdapPacket(1);
+            var bindresponse = new LdapResultAttribute(LdapOperation.BindResponse, LdapResult.success);
             packet.ChildAttributes.Add(bindresponse);
 
             var expected = "300f02040000000161070a010004000400"; // "300c02010161070a010004000400";
