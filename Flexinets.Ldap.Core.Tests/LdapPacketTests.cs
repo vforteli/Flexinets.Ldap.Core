@@ -117,5 +117,36 @@ namespace Flexinets.Ldap.Core.Tests
             var packet = new LdapPacket(Int32.MaxValue);
             Assert.AreEqual(Int32.MaxValue, packet.MessageId);
         }
+
+
+        [TestCase]
+        public void TestPacketParsingBindRequest()
+        {
+            var bytes = "30490201016044020103042d636e3d62696e64557365722c636e3d55736572732c64633d6465762c64633d636f6d70616e792c64633d636f6d801062696e645573657250617373776f7264";
+            var expected = "30490201016044020103042d636e3d62696e64557365722c636e3d55736572732c64633d6465762c64633d636f6d70616e792c64633d636f6d801062696e645573657250617373776f7264";
+            var packetBytes = Utils.StringToByteArray(bytes);
+            var stream = new MemoryStream(packetBytes);
+            LdapPacket.TryParsePacket(stream, out var packet);
+            RecurseAttributes(packet);
+            Assert.AreEqual(expected, Utils.ByteArrayToString(packet.GetBytes()));
+        }
+        private void RecurseAttributes(LdapAttribute attribute, Int32 depth = 1)
+        {
+            if (attribute != null)
+            {
+                Console.WriteLine($"{Utils.Repeat(">", depth)} {attribute.Class}:{attribute.DataType}{attribute.LdapOperation}{attribute.ContextType} - Type: {attribute.GetValue().GetType()} - {attribute.GetValue()}");
+
+                if (attribute.IsConstructed)
+                {
+                    foreach (var attr in attribute.ChildAttributes)
+                    {
+                        depth++;
+                        RecurseAttributes(attr, depth);
+                        depth--;
+                    }
+                }
+            }
+        }
+
     }
 }

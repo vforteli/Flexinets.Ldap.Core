@@ -151,7 +151,9 @@ namespace Flexinets.Ldap.Core
                         return BitConverter.ToBoolean(Value, 0);
 
                     case UniversalDataType.Integer:
-                        return BitConverter.ToInt32(Value.Reverse().ToArray(), 0);
+                        var intbytes = new Byte[4];
+                        Buffer.BlockCopy(Value, 0, intbytes, 4 - Value.Length, Value.Length);
+                        return BitConverter.ToInt32(intbytes.Reverse().ToArray(), 0);
 
                     default:
                         return Encoding.UTF8.GetString(Value, 0, Value.Length);
