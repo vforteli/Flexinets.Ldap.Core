@@ -110,9 +110,7 @@ namespace Flexinets.Ldap.Core
             if (bytes[offset] >> 7 == 1)    // Long notation
             {
                 var lengthoflengthbytes = bytes[offset] & 127;
-                var lengthBytes = new Byte[4];
-                Buffer.BlockCopy(bytes, offset + 1, lengthBytes, 0, lengthoflengthbytes);
-                attributeLength = BitConverter.ToInt32(lengthBytes.Reverse().ToArray(), 0);
+                attributeLength = BitConverter.ToInt32(new ArraySegment<Byte>(bytes, offset + 1, lengthoflengthbytes).Reverse().ToArray(), 0);
                 berByteCount += lengthoflengthbytes;
             }
             else // Short notation

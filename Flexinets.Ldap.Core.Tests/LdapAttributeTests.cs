@@ -56,14 +56,14 @@ namespace Flexinets.Ldap.Core.Tests
         [TestCase]
         public void TestAttributeClass()
         {
-            var attribute = new LdapAttribute(LdapOperation.BindRequest, true);
+            var attribute = new LdapAttribute(LdapOperation.BindRequest);
             Assert.IsNull(attribute.DataType);
         }
 
         [TestCase]
         public void TestAttributeClass2()
         {
-            var attribute = new LdapAttribute(LdapOperation.BindRequest, true);
+            var attribute = new LdapAttribute(LdapOperation.BindRequest);
             Assert.AreEqual(LdapOperation.BindRequest, attribute.LdapOperation);
         }
     }

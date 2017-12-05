@@ -28,9 +28,9 @@ namespace Flexinets.Ldap.Core
         }
 
         public TagClass Class => (TagClass)(TagByte >> 6);
-        public UniversalDataType DataType => (UniversalDataType)(TagByte & 31);
-        public LdapOperation LdapOperation => (LdapOperation)(TagByte & 31);
-        public Byte ContextType => (byte)(TagByte & 31);
+        public UniversalDataType? DataType => Class == TagClass.Universal ? (UniversalDataType?)(TagByte & 31) : null;
+        public LdapOperation? LdapOperation => Class == TagClass.Application ? (LdapOperation?)(TagByte & 31) : null;
+        public Byte? ContextType => Class == TagClass.Context ? (Byte?)(TagByte & 31) : null;
 
 
         /// <summary>

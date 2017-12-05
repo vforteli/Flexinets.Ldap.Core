@@ -11,54 +11,11 @@ namespace Flexinets.Ldap.Core
         protected Byte[] Value = new Byte[0];
         public List<LdapAttribute> ChildAttributes = new List<LdapAttribute>();
 
-        public TagClass Class
-        {
-            get
-            {
-                return _tag.Class;
-            }
-        }
-
-        public Boolean IsConstructed
-        {
-            get { return _tag.IsConstructed; }
-        }
-
-        public LdapOperation? LdapOperation
-        {
-            get
-            {
-                if (_tag.Class == TagClass.Application)
-                {
-                    return _tag.LdapOperation;
-                }
-                return null;
-            }
-        }
-
-        public UniversalDataType? DataType
-        {
-            get
-            {
-                if (_tag.Class == TagClass.Universal)
-                {
-                    return _tag.DataType;
-                }
-                return null;
-            }
-        }
-
-        public Byte? ContextType
-        {
-            get
-            {
-                if (_tag.Class == TagClass.Context)
-                {
-                    return _tag.ContextType;
-                }
-                return null;
-            }
-        }
+        public TagClass Class => _tag.Class;
+        public Boolean IsConstructed => _tag.IsConstructed;
+        public LdapOperation? LdapOperation => _tag.LdapOperation;
+        public UniversalDataType? DataType => _tag.DataType;
+        public Byte? ContextType => _tag.ContextType;
 
 
         /// <summary>
@@ -188,26 +145,21 @@ namespace Flexinets.Ldap.Core
         {
             if (_tag.Class == TagClass.Universal)
             {
-                if (_tag.DataType == UniversalDataType.Boolean)
+                switch (_tag.DataType)
                 {
-                    return BitConverter.ToBoolean(Value, 0);
-                }
-                else if (_tag.DataType == UniversalDataType.Integer)
-                {
-                    var intbytes = new Byte[4];
-                    Buffer.BlockCopy(Value, 0, intbytes, 4 - Value.Length, Value.Length);
-                    return BitConverter.ToInt32(intbytes.Reverse().ToArray(), 0);
-                }
-                else
-                {
-                    return Encoding.UTF8.GetString(Value, 0, Value.Length);
+                    case UniversalDataType.Boolean:
+                        return BitConverter.ToBoolean(Value, 0);
+
+                    case UniversalDataType.Integer:
+                        return BitConverter.ToInt32(Value.Reverse().ToArray(), 0);
+
+                    default:
+                        return Encoding.UTF8.GetString(Value, 0, Value.Length);
                 }
             }
-            else
-            {
-                // todo add rest...
-                return Encoding.UTF8.GetString(Value, 0, Value.Length);
-            }
+
+            // todo add rest if needed
+            return Encoding.UTF8.GetString(Value, 0, Value.Length);
         }
 
 

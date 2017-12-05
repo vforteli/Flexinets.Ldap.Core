@@ -8,13 +8,7 @@ namespace Flexinets.Ldap.Core
     public class LdapPacket : LdapAttribute
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(LdapPacket));
-        public Int32 MessageId
-        {
-            get
-            {
-                return ChildAttributes[0].GetValue<Int32>();
-            }
-        }
+        public Int32 MessageId => ChildAttributes[0].GetValue<Int32>();
 
 
         /// <summary>
