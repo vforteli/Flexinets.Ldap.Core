@@ -66,17 +66,7 @@ namespace Flexinets.Ldap.Core.Tests
             var packet = LdapPacket.ParsePacket(packetBytes);
             Assert.AreEqual(expected, Utils.ByteArrayToString(packet.GetBytes()));
         }
-
-
-        [TestCase]
-        public void TestLdapAttributeParse2()
-        {
-            var expected = "041364633d6b6172616b6f72756d2c64633d6e6574";
-            var packetBytes = Utils.StringToByteArray(expected);
-            var packet = LdapPacket.ParsePacket(packetBytes);
-            Assert.AreEqual(expected, Utils.ByteArrayToString(packet.GetBytes()));
-        }
-
+       
 
         [TestCase]
         public void TestLdapAttributeParse3()

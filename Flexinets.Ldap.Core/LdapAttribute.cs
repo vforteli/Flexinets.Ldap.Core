@@ -189,5 +189,40 @@ namespace Flexinets.Ldap.Core
                     throw new InvalidOperationException($"Nothing found for {value.GetType()}");
             }
         }
+
+
+        /// <summary>
+        /// Parse the child attributes
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="currentPosition"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        protected static List<LdapAttribute> ParseAttributes(Byte[] bytes, Int32 currentPosition, Int32 length)
+        {
+            var list = new List<LdapAttribute>();
+            while (currentPosition < length)
+            {
+                var tag = Tag.Parse(bytes[currentPosition]);
+                currentPosition++;
+                var attributeLength = Utils.BerLengthToInt(bytes, currentPosition, out int i);
+                currentPosition += i;
+
+                var attribute = new LdapAttribute(tag);
+                if (tag.IsConstructed && attributeLength > 0)
+                {
+                    attribute.ChildAttributes = ParseAttributes(bytes, currentPosition, currentPosition + attributeLength);
+                }
+                else
+                {
+                    attribute.Value = new Byte[attributeLength];
+                    Buffer.BlockCopy(bytes, currentPosition, attribute.Value, 0, attributeLength);
+                }
+                list.Add(attribute);
+
+                currentPosition += attributeLength;
+            }
+            return list;
+        }
     }
 }
