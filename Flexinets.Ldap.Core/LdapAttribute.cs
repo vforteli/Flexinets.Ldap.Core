@@ -106,23 +106,18 @@ namespace Flexinets.Ldap.Core
         /// <returns></returns>
         public Byte[] GetBytes()
         {
-            var list = new List<Byte>();
+            var contentBytes = new List<Byte>();
             if (ChildAttributes.Any())
             {
                 _tag.IsConstructed = true;
-                ChildAttributes.ForEach(o => list.AddRange(o.GetBytes()));
+                ChildAttributes.ForEach(o => contentBytes.AddRange(o.GetBytes()));
             }
             else
             {
-                list.AddRange(Value);
+                contentBytes.AddRange(Value);
             }
 
-            var lengthBytes = Utils.IntToBerLength(list.Count);
-            var attributeBytes = new byte[1 + lengthBytes.Length + list.Count];
-            attributeBytes[0] = _tag.TagByte;
-            Buffer.BlockCopy(lengthBytes, 0, attributeBytes, 1, lengthBytes.Length);
-            Buffer.BlockCopy(list.ToArray(), 0, attributeBytes, 1 + lengthBytes.Length, list.Count);
-            return attributeBytes;
+            return new List<Byte> { _tag.TagByte }.Concat(Utils.IntToBerLength(contentBytes.Count)).Concat(contentBytes).ToArray();
         }
 
 
@@ -153,7 +148,8 @@ namespace Flexinets.Ldap.Core
                     case UniversalDataType.Integer:
                         var intbytes = new Byte[4];
                         Buffer.BlockCopy(Value, 0, intbytes, 4 - Value.Length, Value.Length);
-                        return BitConverter.ToInt32(intbytes.Reverse().ToArray(), 0);
+                        Array.Reverse(intbytes);
+                        return BitConverter.ToInt32(intbytes, 0);
 
                     default:
                         return Encoding.UTF8.GetString(Value, 0, Value.Length);
