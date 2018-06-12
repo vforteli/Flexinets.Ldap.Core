@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp2.0;net471</TargetFrameworks>
-    <Version>1.0.28.0</Version>
+    <Version>1.0.64.0</Version>
     <Title>Flexinets.Ldap.Core</Title>
     <Authors>Verner Fortelius</Authors>
     <Description>Library for parsing and assembling LDAP packets
@@ -11,7 +11,7 @@ For an example server implementation see https://github.com/vforteli/FlexinetsLd
     <Copyright>Copyright 2017 Verner Fortelius</Copyright>
     <PackageLicenseUrl>https://github.com/vforteli/Flexinets.Ldap.Core/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/vforteli/Flexinets.Ldap.Core</PackageProjectUrl>
-    <PackageReleaseNotes>Target .Net Standard 2.0, .Net Core 2.0 and .Net 4.7.1</PackageReleaseNotes>
+    <PackageReleaseNotes>Small bug fix</PackageReleaseNotes>
     <PackageTags>LDAP packet parse assemble authentication</PackageTags>
     <AssemblyVersion>1.0.64.0</AssemblyVersion>
     <FileVersion>1.0.64.0</FileVersion>
