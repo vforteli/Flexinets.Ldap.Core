@@ -12,7 +12,7 @@ namespace Flexinets.Ldap.Core
         public List<LdapAttribute> ChildAttributes = new List<LdapAttribute>();
 
         public TagClass Class => _tag.Class;
-        public Boolean IsConstructed => _tag.IsConstructed;
+        public Boolean IsConstructed => _tag.IsConstructed || ChildAttributes.Any();
         public LdapOperation? LdapOperation => _tag.LdapOperation;
         public UniversalDataType? DataType => _tag.DataType;
         public Byte? ContextType => _tag.ContextType;
