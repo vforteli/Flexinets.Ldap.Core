@@ -74,18 +74,10 @@ namespace Flexinets.Ldap.Core
             else
             {
                 var intbytes = BitConverter.GetBytes(length);
+                Array.Reverse(intbytes);
 
                 byte intbyteslength = (byte)intbytes.Length;
-
-                // Get the actual number of bytes needed
-                while (intbyteslength >= 0)
-                {
-                    intbyteslength--;
-                    if (intbytes[intbyteslength - 1] != 0)
-                    {
-                        break;
-                    }
-                }
+                               
 
                 var lengthByte = intbyteslength + 128;
                 var berBytes = new byte[1 + intbyteslength];
