@@ -164,6 +164,10 @@ namespace Flexinets.Ldap.Core.Tests
         }
 
 
+        /// <summary>
+        /// Example from https://wiki.wireshark.org/SampleCaptures?action=AttachFile&do=get&target=ldap-krb5-sign-seal-01.cap
+        /// Parse and rebuild a packet
+        /// </summary>
         [TestCase]
         public void TestPacketParsingmorethan255()
         {
