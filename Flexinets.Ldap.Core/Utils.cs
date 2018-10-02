@@ -102,7 +102,10 @@ namespace Flexinets.Ldap.Core
             if (bytes[offset] >> 7 == 1)    // Long notation
             {
                 var lengthoflengthbytes = bytes[offset] & 127;
-                attributeLength = BitConverter.ToInt32(new ArraySegment<Byte>(bytes, offset + 1, lengthoflengthbytes).Reverse().ToArray(), 0);
+                var temp = new ArraySegment<Byte>(bytes, offset + 1, lengthoflengthbytes).Reverse().ToArray();
+                Array.Resize(ref temp, 4);  // todo, longer? int64?
+
+                attributeLength = BitConverter.ToInt32(temp, 0);
                 berByteCount += lengthoflengthbytes;
             }
             else // Short notation
@@ -131,7 +134,9 @@ namespace Flexinets.Ldap.Core
                 var lengthoflengthbytes = berByte[0] & 127;
                 var lengthBytes = new Byte[lengthoflengthbytes];
                 stream.Read(lengthBytes, 0, lengthoflengthbytes);
-                attributeLength = BitConverter.ToInt32(lengthBytes.Reverse().ToArray(), 0);
+                var temp = lengthBytes.Reverse().ToArray();
+                Array.Resize(ref temp, 4);
+                attributeLength = BitConverter.ToInt32(temp, 0);
                 berByteCount += lengthoflengthbytes;
             }
             else // Short notation, length contained in the first byte
