@@ -77,7 +77,7 @@ namespace Flexinets.Ldap.Core
                 Array.Reverse(intbytes);
 
                 byte intbyteslength = (byte)intbytes.Length;
-                               
+
 
                 var lengthByte = intbyteslength + 128;
                 var berBytes = new byte[1 + intbyteslength];
@@ -97,23 +97,8 @@ namespace Flexinets.Ldap.Core
         /// <returns></returns>
         public static Int32 BerLengthToInt(Byte[] bytes, Int32 offset, out Int32 berByteCount)
         {
-            berByteCount = 1;   // The minimum length of a ber encoded length is 1 byte
-            int attributeLength = 0;
-            if (bytes[offset] >> 7 == 1)    // Long notation
-            {
-                var lengthoflengthbytes = bytes[offset] & 127;
-                var temp = new ArraySegment<Byte>(bytes, offset + 1, lengthoflengthbytes).Reverse().ToArray();
-                Array.Resize(ref temp, 4);  // todo, longer? int64?
-
-                attributeLength = BitConverter.ToInt32(temp, 0);
-                berByteCount += lengthoflengthbytes;
-            }
-            else // Short notation
-            {
-                attributeLength = bytes[offset] & 127;
-            }
-
-            return attributeLength;
+            var stream = new MemoryStream(bytes, offset, bytes.Length - offset, false);
+            return BerLengthToInt(stream, out berByteCount);
         }
 
 
@@ -134,9 +119,9 @@ namespace Flexinets.Ldap.Core
                 var lengthoflengthbytes = berByte[0] & 127;
                 var lengthBytes = new Byte[lengthoflengthbytes];
                 stream.Read(lengthBytes, 0, lengthoflengthbytes);
-                var temp = lengthBytes.Reverse().ToArray();
-                Array.Resize(ref temp, 4);
-                attributeLength = BitConverter.ToInt32(temp, 0);
+                Array.Reverse(lengthBytes);                           
+                Array.Resize(ref lengthBytes, 4);   // this will of course explode if length is larger than a 32 bit integer
+                attributeLength = BitConverter.ToInt32(lengthBytes, 0);
                 berByteCount += lengthoflengthbytes;
             }
             else // Short notation, length contained in the first byte

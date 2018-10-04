@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp2.0;net471</TargetFrameworks>
@@ -13,8 +13,8 @@ For an example server implementation see https://github.com/vforteli/FlexinetsLd
     <PackageProjectUrl>https://github.com/vforteli/Flexinets.Ldap.Core</PackageProjectUrl>
     <PackageReleaseNotes>Fix bug when parsing packets with long notation length</PackageReleaseNotes>
     <PackageTags>LDAP packet parse assemble authentication</PackageTags>
-    <AssemblyVersion>1.0.75.0</AssemblyVersion>
-    <FileVersion>1.0.75.0</FileVersion>
+    <AssemblyVersion>1.0.79.0</AssemblyVersion>
+    <FileVersion>1.0.79.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">

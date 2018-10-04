@@ -106,6 +106,18 @@ namespace Flexinets.Ldap.Core
         /// <returns></returns>
         public Byte[] GetBytes()
         {
+            var attributeBytes = new List<Byte>();
+            BuildAttribute(attributeBytes);
+            return attributeBytes.ToArray();
+        }
+
+
+        /// <summary>
+        /// Recursively build the attribute
+        /// </summary>
+        /// <param name="attributeBytes"></param>
+        private void BuildAttribute(List<Byte> attributeBytes)
+        {
             var contentBytes = new List<Byte>();
             if (ChildAttributes.Any())
             {
@@ -117,7 +129,9 @@ namespace Flexinets.Ldap.Core
                 contentBytes.AddRange(Value);
             }
 
-            return new List<Byte> { _tag.TagByte }.Concat(Utils.IntToBerLength(contentBytes.Count)).Concat(contentBytes).ToArray();
+            attributeBytes.Add(_tag.TagByte);
+            attributeBytes.AddRange(Utils.IntToBerLength(contentBytes.Count));
+            attributeBytes.AddRange(contentBytes);
         }
 
 

@@ -15,7 +15,7 @@ namespace Flexinets.Ldap.Core
         {
             get
             {
-                return new BitArray(new byte[] { TagByte }).Get(5);
+                return (TagByte & (1 << 5)) != 0;                
             }
             set
             {
