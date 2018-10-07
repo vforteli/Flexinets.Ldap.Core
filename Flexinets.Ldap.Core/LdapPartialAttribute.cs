@@ -30,10 +30,7 @@ namespace Flexinets.Ldap.Core
         {
             ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, attributeDescription));
             var values = new LdapAttribute(UniversalDataType.Set);
-            foreach (var value in attributeValues)
-            {
-                values.ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, value));
-            }
+            values.ChildAttributes.AddRange(attributeValues.Select(o => new LdapAttribute(UniversalDataType.OctetString, o)));
             ChildAttributes.Add(values);
         }
 
@@ -46,6 +43,6 @@ namespace Flexinets.Ldap.Core
         public LdapPartialAttribute(String attributeDescription, String attributeValue) : this(attributeDescription, new List<String> { attributeValue })
         {
 
-        }        
+        }
     }
 }
