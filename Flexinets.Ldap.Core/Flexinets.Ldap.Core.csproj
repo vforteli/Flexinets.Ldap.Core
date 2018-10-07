@@ -13,8 +13,8 @@ For an example server implementation see https://github.com/vforteli/FlexinetsLd
     <PackageProjectUrl>https://github.com/vforteli/Flexinets.Ldap.Core</PackageProjectUrl>
     <PackageReleaseNotes>Minor performance improvements</PackageReleaseNotes>
     <PackageTags>LDAP packet parse assemble authentication</PackageTags>
-    <AssemblyVersion>1.0.85.0</AssemblyVersion>
-    <FileVersion>1.0.85.0</FileVersion>
+    <AssemblyVersion>1.0.86.0</AssemblyVersion>
+    <FileVersion>1.0.86.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
