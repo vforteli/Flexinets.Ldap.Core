@@ -1,12 +1,11 @@
-﻿using log4net;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Flexinets.Ldap.Core
 {
     public class LdapPacket : LdapAttribute
-    {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(LdapPacket));
+    {        
         public Int32 MessageId => ChildAttributes[0].GetValue<Int32>();
 
 
@@ -69,7 +68,7 @@ namespace Flexinets.Ldap.Core
             }
             catch (Exception ex)
             {
-                _log.Error("Could not parse packet from stream", ex);
+                Trace.TraceError($"Could not parse packet from stream {ex.Message}");                
             }
 
             packet = null;

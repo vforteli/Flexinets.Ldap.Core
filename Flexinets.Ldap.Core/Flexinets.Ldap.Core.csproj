@@ -13,8 +13,8 @@ For an example server implementation see https://github.com/vforteli/FlexinetsLd
     <PackageProjectUrl>https://github.com/vforteli/Flexinets.Ldap.Core</PackageProjectUrl>
     <PackageReleaseNotes>Added convenience class for creating partial attributes</PackageReleaseNotes>
     <PackageTags>LDAP packet parse assemble authentication</PackageTags>
-    <AssemblyVersion>1.0.87.0</AssemblyVersion>
-    <FileVersion>1.0.87.0</FileVersion>
+    <AssemblyVersion>1.0.88.0</AssemblyVersion>
+    <FileVersion>1.0.88.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
@@ -27,9 +27,5 @@ For an example server implementation see https://github.com/vforteli/FlexinetsLd
     <AssemblyFileVersionSettings>None.None.Increment.None</AssemblyFileVersionSettings>
     <AssemblyInfoVersionSettings>None.None.Increment.None</AssemblyInfoVersionSettings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.8" />
-  </ItemGroup>
 
 </Project>
