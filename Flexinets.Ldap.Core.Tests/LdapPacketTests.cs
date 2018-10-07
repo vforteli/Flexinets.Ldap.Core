@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Flexinets.Ldap.Core.Tests
@@ -132,7 +133,7 @@ namespace Flexinets.Ldap.Core.Tests
 
             var partialAttributeList = new LdapAttribute(UniversalDataType.Sequence);
 
-            
+
 
             var partialAttributeUid = new LdapAttribute(UniversalDataType.Sequence);
             partialAttributeUid.ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, "uid"));   // type
@@ -159,8 +160,34 @@ namespace Flexinets.Ldap.Core.Tests
             var packet = LdapPacket.ParsePacket(responsEntryBytes);
             RecurseAttributes(packet);
             Assert.AreEqual(expected, Utils.ByteArrayToString(packet.GetBytes()));
+        }
 
 
+        [TestCase]
+        public void TestPacketPartialAttribute()
+        {
+            var expected = "3084000000800204000000016478042d636e3d62696e64557365722c636e3d55736572732c64633d6465762c64633d636f6d70616e792c64633d636f6d3047301804037569643111040f75736572756964676f657368657265302b040b6f626a656374436c617373311c040c616161616161616161616161040c626262626262626262626262";
+            var responseEntryPacket = new LdapPacket(1);
+            var searchResultEntry = new LdapAttribute(LdapOperation.SearchResultEntry);
+            searchResultEntry.ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, "cn=bindUser,cn=Users,dc=dev,dc=company,dc=com"));   //  objectName
+
+            var partialAttributeList = new LdapAttribute(UniversalDataType.Sequence);
+
+
+
+            partialAttributeList.ChildAttributes.Add(new LdapPartialAttribute("uid", "useruidgoeshere"));
+            partialAttributeList.ChildAttributes.Add(new LdapPartialAttribute("objectClass", new List<String> { "aaaaaaaaaaaa", "bbbbbbbbbbbb" }));
+
+            searchResultEntry.ChildAttributes.Add(partialAttributeList);
+            responseEntryPacket.ChildAttributes.Add(searchResultEntry);
+            var responsEntryBytes = responseEntryPacket.GetBytes();
+
+            Console.WriteLine(Utils.ByteArrayToString(responsEntryBytes));
+
+
+            var packet = LdapPacket.ParsePacket(responsEntryBytes);
+            RecurseAttributes(packet);
+            Assert.AreEqual(expected, Utils.ByteArrayToString(packet.GetBytes()));
         }
 
 
@@ -205,7 +232,7 @@ namespace Flexinets.Ldap.Core.Tests
 
 
 
-        
+
 
 
         private void RecurseAttributes(LdapAttribute attribute, Int32 depth = 1)
