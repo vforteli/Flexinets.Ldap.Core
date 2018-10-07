@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.79] - 2018-10-07
+### Added
+- Convenience class for creating partial attributes with values (LdapPartialAttribute)
+
+
 ## [1.0.79] - 2018-10-04
 ### Enhancements
 - Some minor performance improvements when parsing and building attributes

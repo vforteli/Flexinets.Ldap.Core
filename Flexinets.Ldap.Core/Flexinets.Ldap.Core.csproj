@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp2.0;net471</TargetFrameworks>
-    <Version>1.0.79.0</Version>
+    <Version>1.0.86.0</Version>
     <Title>Flexinets.Ldap.Core</Title>
     <Authors>Verner Fortelius</Authors>
     <Description>Library for parsing and assembling LDAP packets
@@ -11,7 +11,7 @@ For an example server implementation see https://github.com/vforteli/FlexinetsLd
     <Copyright>Copyright 2017 Verner Fortelius</Copyright>
     <PackageLicenseUrl>https://github.com/vforteli/Flexinets.Ldap.Core/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/vforteli/Flexinets.Ldap.Core</PackageProjectUrl>
-    <PackageReleaseNotes>Minor performance improvements</PackageReleaseNotes>
+    <PackageReleaseNotes>Added convenience class for creating partial attributes</PackageReleaseNotes>
     <PackageTags>LDAP packet parse assemble authentication</PackageTags>
     <AssemblyVersion>1.0.86.0</AssemblyVersion>
     <FileVersion>1.0.86.0</FileVersion>
