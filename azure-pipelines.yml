@@ -31,7 +31,7 @@ steps:
     displayName: Publish coverage results
     inputs:
       codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/Flexinets.Radius.Core.Tests/coverage.cobertura.xml'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/Flexinets.Ldap.Core.Tests/coverage.cobertura.xml'
       failIfCoverageEmpty: true
 
   - task: DotNetCoreCLI@2
