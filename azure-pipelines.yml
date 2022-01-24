@@ -1,0 +1,46 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  BuildConfiguration: 'Release'
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: 'restore'
+      feedsToUse: 'select'
+
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: 'build'
+      arguments: '--configuration $(BuildConfiguration) --no-restore'
+
+  - task: DotNetCoreCLI@2
+    displayName: Test
+    inputs:
+      command: 'test'
+      projects: '*.sln'
+      arguments: '--configuration $(BuildConfiguration) --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish coverage results
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/Flexinets.Radius.Core.Tests/coverage.cobertura.xml'
+      failIfCoverageEmpty: true
+
+  - task: DotNetCoreCLI@2
+    displayName: Pack
+    inputs:
+      command: 'pack'
+      packagesToPack: '**/*.csproj'
+      nobuild: true
+      includesymbols: true
+      versioningScheme: 'off'
+      arguments: --configuration $(BuildConfiguration) --no-restore --include-symbols --no-build
+      packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
