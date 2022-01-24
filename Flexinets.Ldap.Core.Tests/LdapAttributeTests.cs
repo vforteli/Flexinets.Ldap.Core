@@ -8,7 +8,7 @@ namespace Flexinets.Ldap.Core.Tests
         [TestCase]
         public void TestLdapAttributeGetBytes()
         {
-            var attribute = new LdapAttribute(UniversalDataType.Integer, (Byte)1);
+            var attribute = new LdapAttribute(UniversalDataType.Integer, (byte)1);
             Assert.AreEqual("020101", Utils.ByteArrayToString(attribute.GetBytes()));
         }
 
@@ -16,7 +16,7 @@ namespace Flexinets.Ldap.Core.Tests
         [TestCase]
         public void TestLdapAttributeGetBytes2()
         {
-            var attribute = new LdapAttribute(UniversalDataType.Integer, (Byte)2);
+            var attribute = new LdapAttribute(UniversalDataType.Integer, (byte)2);
             Assert.AreEqual("020102", Utils.ByteArrayToString(attribute.GetBytes()));
         }
 
@@ -24,8 +24,8 @@ namespace Flexinets.Ldap.Core.Tests
         [TestCase]
         public void TestLdapAttributeGetBytesMaxInt()
         {
-            var attribute = new LdapAttribute(UniversalDataType.Integer, Int32.MaxValue);
-            Assert.AreEqual(Int32.MaxValue, attribute.GetValue<Int32>());
+            var attribute = new LdapAttribute(UniversalDataType.Integer, int.MaxValue);
+            Assert.AreEqual(int.MaxValue, attribute.GetValue<int>());
         }
 
 

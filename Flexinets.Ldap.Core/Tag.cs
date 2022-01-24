@@ -8,10 +8,10 @@ namespace Flexinets.Ldap.Core
         /// <summary>
         /// Tag in byte form
         /// </summary>
-        public Byte TagByte { get; internal set; }
+        public byte TagByte { get; internal set; }
 
 
-        public Boolean IsConstructed
+        public bool IsConstructed
         {
             get
             {
@@ -30,7 +30,7 @@ namespace Flexinets.Ldap.Core
         public TagClass Class => (TagClass)(TagByte >> 6);
         public UniversalDataType? DataType => Class == TagClass.Universal ? (UniversalDataType?)(TagByte & 31) : null;
         public LdapOperation? LdapOperation => Class == TagClass.Application ? (LdapOperation?)(TagByte & 31) : null;
-        public Byte? ContextType => Class == TagClass.Context ? (Byte?)(TagByte & 31) : null;
+        public byte? ContextType => Class == TagClass.Context ? (byte?)(TagByte & 31) : null;
 
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="isSequence"></param>
         /// <param name="operation"></param>
-        public Tag(Byte context)
+        public Tag(byte context)
         {
             TagByte = (byte)(context + ((byte)TagClass.Context << 6));
         }
@@ -71,7 +71,7 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="tagByte"></param>
         /// <returns></returns>
-        public static Tag Parse(Byte tagByte)
+        public static Tag Parse(byte tagByte)
         {
             return new Tag { TagByte = tagByte };
         }

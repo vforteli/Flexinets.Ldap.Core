@@ -2,18 +2,19 @@
 using System.Diagnostics;
 using System.IO;
 
+
 namespace Flexinets.Ldap.Core
 {
     public class LdapPacket : LdapAttribute
     {        
-        public Int32 MessageId => ChildAttributes[0].GetValue<Int32>();
+        public int MessageId => ChildAttributes[0].GetValue<int>();
 
 
         /// <summary>
         /// Create a new Ldap packet with message id
         /// </summary>
         /// <param name="messageId"></param>
-        public LdapPacket(Int32 messageId) : base(UniversalDataType.Sequence)
+        public LdapPacket(int messageId) : base(UniversalDataType.Sequence)
         {
             ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, messageId));
         }
@@ -34,7 +35,7 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public static LdapPacket ParsePacket(Byte[] bytes)
+        public static LdapPacket ParsePacket(byte[] bytes)
         {
             var packet = new LdapPacket(Tag.Parse(bytes[0]));
             var contentLength = Utils.BerLengthToInt(bytes, 1, out var lengthBytesCount);
@@ -49,16 +50,16 @@ namespace Flexinets.Ldap.Core
         /// <param name="stream"></param>
         /// <param name="packet"></param>
         /// <returns>True if succesful. False if parsing fails or stream is empty</returns>
-        public static Boolean TryParsePacket(Stream stream, out LdapPacket packet)
+        public static bool TryParsePacket(Stream stream, out LdapPacket? packet)
         {
             try
             {
-                var tagByte = new Byte[1];
+                var tagByte = new byte[1];
                 var i = stream.Read(tagByte, 0, 1);
                 if (i != 0)
                 {
                     var contentLength = Utils.BerLengthToInt(stream, out int n);
-                    var contentBytes = new Byte[contentLength];
+                    var contentBytes = new byte[contentLength];
                     stream.Read(contentBytes, 0, contentLength);
 
                     packet = new LdapPacket(Tag.Parse(tagByte[0]));

@@ -12,13 +12,13 @@ namespace Flexinets.Ldap.Core
         /// <summary>
         /// Partial attribute description
         /// </summary>
-        public String Description => (String)ChildAttributes.FirstOrDefault().GetValue();
+        public string Description => (string)ChildAttributes.FirstOrDefault().GetValue();
 
 
         /// <summary>
         /// Partial attribute values
         /// </summary>
-        public List<String> Values => ChildAttributes[1].ChildAttributes.Select(o => (String)o.GetValue()).ToList();
+        public List<string> Values => ChildAttributes[1].ChildAttributes.Select(o => (string)o.GetValue()).ToList();
 
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="attributeDescription"></param>
         /// <param name="attributeValues"></param>
-        public LdapPartialAttribute(String attributeDescription, IEnumerable<String> attributeValues) : base(UniversalDataType.Sequence)
+        public LdapPartialAttribute(string attributeDescription, IEnumerable<string> attributeValues) : base(UniversalDataType.Sequence)
         {
             ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, attributeDescription));
             var values = new LdapAttribute(UniversalDataType.Set);
@@ -40,7 +40,7 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="attributeDescription"></param>
         /// <param name="attributeValue"></param>
-        public LdapPartialAttribute(String attributeDescription, String attributeValue) : this(attributeDescription, new List<String> { attributeValue })
+        public LdapPartialAttribute(string attributeDescription, string attributeValue) : this(attributeDescription, new List<string> { attributeValue })
         {
 
         }
