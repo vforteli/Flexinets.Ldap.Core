@@ -44,3 +44,10 @@ steps:
       versioningScheme: 'off'
       arguments: --configuration $(BuildConfiguration) --no-restore --include-symbols --no-build
       packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
+
+  - task: NuGetCommand@2
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: 'fb196d03-ac55-45b1-a754-67c1cd5115c8'
