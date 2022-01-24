@@ -30,7 +30,7 @@ namespace Flexinets.Ldap.Core.Tests
         [TestCase]
         public void TestLdapPartialAttributeMultipleValues()
         {
-            var expected = new List<String> { "test", "foo", "bar" };
+            var expected = new List<string> { "test", "foo", "bar" };
             var attribute = new LdapPartialAttribute("objectClass", expected);
 
             var output = attribute.Values;

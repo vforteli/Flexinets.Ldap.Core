@@ -14,7 +14,7 @@ namespace Flexinets.Ldap.Core.Tests
                 IsConstructed = true
             };
             var tagbyte = tag.TagByte;
-            Assert.AreEqual("00001100", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
+            Assert.AreEqual("00001100", Utils.BitsToString(new BitArray(new byte[] { tagbyte })));
         }
 
 
@@ -33,7 +33,7 @@ namespace Flexinets.Ldap.Core.Tests
         {
             var tag = new Tag(UniversalDataType.Integer);
             var tagbyte = tag.TagByte;
-            Assert.AreEqual("01000000", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
+            Assert.AreEqual("01000000", Utils.BitsToString(new BitArray(new byte[] { tagbyte })));
         }
 
         [TestCase]
@@ -54,7 +54,7 @@ namespace Flexinets.Ldap.Core.Tests
                 IsConstructed = true
             };
             var tagbyte = tag.TagByte;
-            Assert.AreEqual("11000110", Utils.BitsToString(new BitArray(new Byte[] { tagbyte })));
+            Assert.AreEqual("11000110", Utils.BitsToString(new BitArray(new byte[] { tagbyte })));
         }
 
         [TestCase]

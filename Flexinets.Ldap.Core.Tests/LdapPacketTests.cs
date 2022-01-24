@@ -13,7 +13,7 @@ namespace Flexinets.Ldap.Core.Tests
             var packet = new LdapPacket(1);
 
             var bindrequest = new LdapAttribute(LdapOperation.BindRequest);
-            bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, (Byte)3));
+            bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.Integer, (byte)3));
             bindrequest.ChildAttributes.Add(new LdapAttribute(UniversalDataType.OctetString, "cn=bindUser,cn=Users,dc=dev,dc=company,dc=com"));
             bindrequest.ChildAttributes.Add(new LdapAttribute((byte)0, "bindUserPassword"));
 
@@ -31,7 +31,7 @@ namespace Flexinets.Ldap.Core.Tests
 
             var bindresponse = new LdapAttribute(LdapOperation.BindResponse);
 
-            var resultCode = new LdapAttribute(UniversalDataType.Enumerated, (Byte)LdapResult.success);
+            var resultCode = new LdapAttribute(UniversalDataType.Enumerated, (byte)LdapResult.success);
             bindresponse.ChildAttributes.Add(resultCode);
 
             var matchedDn = new LdapAttribute(UniversalDataType.OctetString);
@@ -105,8 +105,8 @@ namespace Flexinets.Ldap.Core.Tests
         [TestCase]
         public void TestPacketMessageId()
         {
-            var packet = new LdapPacket(Int32.MaxValue);
-            Assert.AreEqual(Int32.MaxValue, packet.MessageId);
+            var packet = new LdapPacket(int.MaxValue);
+            Assert.AreEqual(int.MaxValue, packet.MessageId);
         }
 
 
@@ -176,7 +176,7 @@ namespace Flexinets.Ldap.Core.Tests
 
 
             partialAttributeList.ChildAttributes.Add(new LdapPartialAttribute("uid", "useruidgoeshere"));
-            partialAttributeList.ChildAttributes.Add(new LdapPartialAttribute("objectClass", new List<String> { "aaaaaaaaaaaa", "bbbbbbbbbbbb" }));
+            partialAttributeList.ChildAttributes.Add(new LdapPartialAttribute("objectClass", new List<string> { "aaaaaaaaaaaa", "bbbbbbbbbbbb" }));
 
             searchResultEntry.ChildAttributes.Add(partialAttributeList);
             responseEntryPacket.ChildAttributes.Add(searchResultEntry);
@@ -235,7 +235,7 @@ namespace Flexinets.Ldap.Core.Tests
 
 
 
-        private void RecurseAttributes(LdapAttribute attribute, Int32 depth = 1)
+        private void RecurseAttributes(LdapAttribute attribute, int depth = 1)
         {
             if (attribute != null)
             {

@@ -8,14 +8,14 @@ namespace Flexinets.Ldap.Core
     public class LdapAttribute
     {
         private Tag _tag;
-        protected Byte[] Value = new Byte[0];
+        protected byte[] Value = new byte[0];
         public List<LdapAttribute> ChildAttributes = new List<LdapAttribute>();
 
         public TagClass Class => _tag.Class;
-        public Boolean IsConstructed => _tag.IsConstructed || ChildAttributes.Any();
+        public bool IsConstructed => _tag.IsConstructed || ChildAttributes.Any();
         public LdapOperation? LdapOperation => _tag.LdapOperation;
         public UniversalDataType? DataType => _tag.DataType;
-        public Byte? ContextType => _tag.ContextType;
+        public byte? ContextType => _tag.ContextType;
 
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Flexinets.Ldap.Core
         /// <param name="operation"></param>
         /// <param name="isConstructed"></param>
         /// <param name="value"></param>
-        public LdapAttribute(LdapOperation operation, Object value)
+        public LdapAttribute(LdapOperation operation, object value)
         {
             _tag = new Tag(operation);
             Value = GetBytes(value);
@@ -59,7 +59,7 @@ namespace Flexinets.Ldap.Core
         /// <param name="dataType"></param>
         /// <param name="isConstructed"></param>
         /// <param name="value"></param>
-        public LdapAttribute(UniversalDataType dataType, Object value)
+        public LdapAttribute(UniversalDataType dataType, object value)
         {
             _tag = new Tag(dataType);
             Value = GetBytes(value);
@@ -71,7 +71,7 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="contextType"></param>
         /// <param name="isConstructed"></param>
-        public LdapAttribute(Byte contextType)
+        public LdapAttribute(byte contextType)
         {
             _tag = new Tag(contextType);
         }
@@ -83,7 +83,7 @@ namespace Flexinets.Ldap.Core
         /// <param name="contextType"></param>
         /// <param name="isConstructed"></param>
         /// <param name="value"></param>
-        public LdapAttribute(Byte contextType, Object value)
+        public LdapAttribute(byte contextType, object value)
         {
             _tag = new Tag(contextType);
             Value = GetBytes(value);
@@ -104,9 +104,9 @@ namespace Flexinets.Ldap.Core
         /// Get the byte representation of the attribute and its children
         /// </summary>
         /// <returns></returns>
-        public Byte[] GetBytes()
+        public byte[] GetBytes()
         {
-            var attributeBytes = new List<Byte>();
+            var attributeBytes = new List<byte>();
             BuildAttribute(attributeBytes);
             return attributeBytes.ToArray();
         }
@@ -116,9 +116,9 @@ namespace Flexinets.Ldap.Core
         /// Recursively build the attribute
         /// </summary>
         /// <param name="attributeBytes"></param>
-        private void BuildAttribute(List<Byte> attributeBytes)
+        private void BuildAttribute(List<byte> attributeBytes)
         {
-            var contentBytes = new List<Byte>();
+            var contentBytes = new List<byte>();
             if (ChildAttributes.Any())
             {
                 _tag.IsConstructed = true;
@@ -160,7 +160,7 @@ namespace Flexinets.Ldap.Core
                         return BitConverter.ToBoolean(Value, 0);
 
                     case UniversalDataType.Integer:
-                        var intbytes = new Byte[4];
+                        var intbytes = new byte[4];
                         Buffer.BlockCopy(Value, 0, intbytes, 4 - Value.Length, Value.Length);
                         Array.Reverse(intbytes);
                         return BitConverter.ToInt32(intbytes, 0);
@@ -180,23 +180,23 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private Byte[] GetBytes(Object value)
+        private byte[] GetBytes(object value)
         {
             switch (value)
             {
-                case String _value:
+                case string _value:
                     return Encoding.UTF8.GetBytes(_value);
 
-                case Int32 _value:
+                case int _value:
                     return BitConverter.GetBytes(_value).Reverse().ToArray();
 
-                case Boolean _value:
+                case bool _value:
                     return BitConverter.GetBytes(_value);
 
-                case Byte _value:
-                    return new Byte[] { _value };
+                case byte _value:
+                    return new byte[] { _value };
 
-                case Byte[] _value:
+                case byte[] _value:
                     return _value;
 
                 default:
@@ -212,7 +212,7 @@ namespace Flexinets.Ldap.Core
         /// <param name="currentPosition"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        protected static List<LdapAttribute> ParseAttributes(Byte[] bytes, Int32 currentPosition, Int32 length)
+        protected static List<LdapAttribute> ParseAttributes(byte[] bytes, int currentPosition, int length)
         {
             var list = new List<LdapAttribute>();
             while (currentPosition < length)
@@ -229,7 +229,7 @@ namespace Flexinets.Ldap.Core
                 }
                 else
                 {
-                    attribute.Value = new Byte[attributeLength];
+                    attribute.Value = new byte[attributeLength];
                     Buffer.BlockCopy(bytes, currentPosition, attribute.Value, 0, attributeLength);
                 }
                 list.Add(attribute);
