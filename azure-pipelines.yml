@@ -1,46 +1,114 @@
 trigger:
-- master
+  branches:
+    include:
+      - master
+      - prerelease
+
+  tags:
+    include:
+      - v*
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
   BuildConfiguration: 'Release'
+  ${{ if startsWith(variables['build.sourceBranch'], 'refs/tags/v') }}:
+    versionSuffixParam: ''
+    versionSuffixProp: ''
+  
+  ${{ if not(startsWith(variables['build.sourceBranch'], 'refs/tags/v')) }}:
+      versionSuffixParam: '--version-suffix "preview-$(Build.BuildId)"'
+      versionSuffixProp: 'VersionSuffix=preview-$(Build.BuildId)'
 
-steps:
-  - task: DotNetCoreCLI@2
-    displayName: Restore
-    inputs:
-      command: 'restore'
-      feedsToUse: 'select'
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: Restore
+            inputs:
+              command: 'restore'
+              restoreArguments: '--locked-mode'
+              feedsToUse: 'select'
 
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      command: 'build'
-      arguments: '--configuration $(BuildConfiguration) --no-restore'
+          - task: DotNetCoreCLI@2
+            displayName: Build
+            inputs:
+              command: 'build'
+              arguments: '--configuration $(BuildConfiguration) --no-restore $(versionSuffixParam)'
 
-  - task: DotNetCoreCLI@2
-    displayName: Test
-    inputs:
-      command: 'test'
-      projects: '*.sln'
-      arguments: '--configuration $(BuildConfiguration) --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+          - task: DotNetCoreCLI@2
+            displayName: Test
+            inputs:
+              command: 'test'
+              projects: '*.sln'
+              arguments: '--configuration $(BuildConfiguration) --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 
-  - task: PublishCodeCoverageResults@1
-    displayName: Publish coverage results
-    inputs:
-      codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/Flexinets.Ldap.Core.Tests/coverage.cobertura.xml'
-      failIfCoverageEmpty: true
+          - task: PublishCodeCoverageResults@1
+            displayName: Publish coverage results
+            inputs:
+              codeCoverageTool: 'Cobertura'
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/Flexinets.Ldap.Core.Tests/coverage.cobertura.xml'
+              failIfCoverageEmpty: true
 
-  - task: DotNetCoreCLI@2
-    displayName: Pack
-    inputs:
-      command: 'pack'
-      packagesToPack: '**/*.csproj'
-      nobuild: true
-      includesymbols: true
-      versioningScheme: 'off'
-      arguments: --configuration $(BuildConfiguration) --no-restore --include-symbols --no-build
-      packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
+          - task: DotNetCoreCLI@2
+            displayName: Pack
+            inputs:
+              command: 'pack'                                                        
+              arguments: --configuration $(BuildConfiguration) --no-restore --include-symbols --no-build
+              buildProperties: $(versionSuffixProp)
+              packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
+
+          - publish: '$(Build.ArtifactStagingDirectory)/packages'
+            artifact: packages
+
+    
+  - stage: Prerelease
+    dependsOn:
+      - Build
+    condition:  and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/prerelease'))
+    jobs:
+      - job: Prerelease
+        steps:
+        - checkout: none
+        - download: current
+          artifact: packages
+          patterns: '**/*.nupkg'
+
+        - task: NugetAuthenticate@0
+
+        - task: NuGetCommand@2
+          displayName: Push to prerelease
+          inputs:
+            command: 'push'
+            allowPackageConflicts: true
+            packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg'
+            nuGetFeedType: 'internal'
+            publishVstsFeed: 'fb196d03-ac55-45b1-a754-67c1cd5115c8'
+
+
+  - stage: Publish
+    dependsOn:
+      - Build
+    condition:  and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    jobs:
+      - job: Publish
+        steps:
+        - checkout: none
+        - download: current
+          artifact: packages
+          patterns: '**/*.nupkg'
+
+        - task: NugetAuthenticate@0
+
+        - task: NuGetCommand@2
+          displayName: Push to prerelease
+          inputs:
+            command: 'push'
+            allowPackageConflicts: true
+            packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+            nuGetFeedType: 'internal'
+            publishVstsFeed: 'fb196d03-ac55-45b1-a754-67c1cd5115c8'
+        
