@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Flexinets.Ldap.Core
@@ -42,7 +41,6 @@ namespace Flexinets.Ldap.Core
         /// <param name="attributeValue"></param>
         public LdapPartialAttribute(string attributeDescription, string attributeValue) : this(attributeDescription, new List<string> { attributeValue })
         {
-
         }
     }
 }

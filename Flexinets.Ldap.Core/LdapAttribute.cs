@@ -140,10 +140,7 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetValue<T>()
-        {
-            return (T)Convert.ChangeType(GetValue(), typeof(T));
-        }
+        public T GetValue<T>() => (T)Convert.ChangeType(GetValue(), typeof(T));
 
 
         /// <summary>
@@ -180,29 +177,15 @@ namespace Flexinets.Ldap.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private byte[] GetBytes(object value)
+        private byte[] GetBytes(object value) => value switch
         {
-            switch (value)
-            {
-                case string _value:
-                    return Encoding.UTF8.GetBytes(_value);
-
-                case int _value:
-                    return BitConverter.GetBytes(_value).Reverse().ToArray();
-
-                case bool _value:
-                    return BitConverter.GetBytes(_value);
-
-                case byte _value:
-                    return new byte[] { _value };
-
-                case byte[] _value:
-                    return _value;
-
-                default:
-                    throw new InvalidOperationException($"Nothing found for {value.GetType()}");
-            }
-        }
+            string v => Encoding.UTF8.GetBytes(v),
+            int v => BitConverter.GetBytes(v).Reverse().ToArray(),
+            bool v => BitConverter.GetBytes(v),
+            byte v => new byte[] { v },
+            byte[] v => v,
+            _ => throw new ArgumentException($"No conversion configured for {value.GetType()}"),
+        };
 
 
         /// <summary>

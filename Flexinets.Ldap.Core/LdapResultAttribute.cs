@@ -1,13 +1,10 @@
-﻿using System;
-
-namespace Flexinets.Ldap.Core
+﻿namespace Flexinets.Ldap.Core
 {
     public class LdapResultAttribute : LdapAttribute
     {
         /// <summary>
-        /// Create a new Ldap packet with message id
-        /// </summary>
-        /// <param name="messageId"></param>
+        /// Create an Ldap result attribute
+        /// </summary>        
         public LdapResultAttribute(LdapOperation operation, LdapResult result, string matchedDN = "", string diagnosticMessage = "") : base(operation)
         {
             ChildAttributes.Add(new LdapAttribute(UniversalDataType.Enumerated, (byte)result));
